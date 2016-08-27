@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/rupertqin/node-crawlers/issues"
   },
-  "homepage": "https://github.com/rupertqin/node-crawlers#readme"
+  "homepage": "https://github.com/rupertqin/node-crawlers#readme",
+  "dependencies": {
+    "mongoose": "^4.5.10",
+    "request": "^2.74.0"
+  }
 }
