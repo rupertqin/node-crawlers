@@ -45,113 +45,80 @@ class Crawler {
     }
 
     getData(url) {
-        // 代理容易失效,自己替换
-        const proxies = {
-            "http": "http://42.159.251.84:41795",
-            "http": "http://121.33.226.167:3128",
-            'http': 'http://121.61.96.241:8118',
-            'http': 'http://39.1.46.165:8080'
-        }
-        // requests 请求
-        const UrlObj = Url.parse(url)
-        console.log(UrlObj)
-        const req = http.request({
-            hostname: UrlObj.hostname,
-            port: 80,
-            path: UrlObj.path,
-            method: 'GET',
+        var options = {
+            url: url,
             headers: {
                 'Host': 'www.lagou.com',
                 'User-Agent': `Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36 115Browser/6.0.3`,
                 'Connection': 'keep-alive'
             }
-        }, (res)=> {
-            console.log(`STATUS: ${res.statusCode}`);
-            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-            let data = ''
-            res.setEncoding('utf8');
-            res.on('data', (chunk) => {
-                // console.log(`BODY: ${chunk}`);
-                data += chunk
-            });
-            res.on('end', () => {
-                
+        };
+        request(options, (error, response, body)=> {
+            if (!error && response.statusCode == 200) {
+                console.log('===== body: ' , body);
+                let req;
+                try {
+                    req = JSON.parse(body)
 
-                // 如果 status_code == 200 表示请求正常
-                if (res.statusCode == 200) {
-                    console.log('===== data: ' , data);
-                    const req = JSON.parse(data)
-                    console.log('===== data: ' , req);
-                    // 如果 pageNo == 0 表示后面没有页数了，不用继续往后面请求了
-                    if (req['content']['pageNo'] == 0) return
+                } catch(e) {
+                    if (e) return false;
 
-                    if (('content' in req)) {
-                        const list_con = req['content']['positionResult']['result']
-                        if (list_con.length >= 0) {
-                            for (let i of list_con){
-                                // 构建存储字段
-                                this.insertData(DB, {
-                                    "companyShortName": i['companyShortName'],
-                                    "salary":i['salary'],
-                                    "city": i['city'],
-                                    "education": i['education'],
-                                    "positionName": i['positionName'],
-                                    "workYear": i['workYear'],
-                                    "companySize": i['companySize'],
-                                    "financeStage": i['financeStage'],
-                                    "industryField": i['industryField'],
-                                    "positionId":i['positionId']
-                                })
-                            }
-                        }
-
-                    } else {
-                        console.log('数据错误：',req)
-                    }
-                } else {
-                    console.log('网络不好,返回状态码：', req.status_code)
                 }
-            });
-            
+                console.log('===== data: ' , req);
+                // 如果 pageNo == 0 表示后面没有页数了，不用继续往后面请求了
+                if (req['content']['pageNo'] == 0) return
 
-        })
+                if (('content' in req)) {
+                    const list_con = req['content']['positionResult']['result']
+                    if (list_con.length >= 0) {
+                        for (let i of list_con){
+                            // 构建存储字段
+                            this.insertData(DB, {
+                                "companyShortName": i['companyShortName'],
+                                "salary":i['salary'],
+                                "city": i['city'],
+                                "education": i['education'],
+                                "positionName": i['positionName'],
+                                "workYear": i['workYear'],
+                                "companySize": i['companySize'],
+                                "financeStage": i['financeStage'],
+                                "industryField": i['industryField'],
+                                "positionId":i['positionId']
+                            })
+                        }
+                    }
 
-        req.on('error', (e) => {
-            console.log(`problem with request: ${e.message}`);
+                } else {
+                    console.log('数据错误：',req)
+                }
+            }
         });
-
-        // write data to request body
-        req.write('po');
-        req.end();
-
 
         
     }
 
     start() {
         const self = this
-        for (let hy of hangye) {
-            console.log('当前行业是：', hy)
-            for (let city of cities.slice(0,1)) {
-                console.log('当前城市是：', city)
-                for (let position of positions.slice(0,1)) {
-                    console.log('当前职位是：', position)
+        for (let i=0;i<hangye.length;i++) {
+            console.log('当前行业是：', hangye[i])
+            for (let k=0;k<cities.length;k++) {
+                console.log('当前城市是：', cities[k])
+                for (let pNum=0;pNum<positions.length;pNum++) {
+                    console.log('当前职位是：', positions[pNum])
                     for (let page=0;page<31;page++) {
-                        process.nextTick(()=> {
-                            setTimeout(()=> {
-                                console.log('当前抓取页面是：', page)
-                                const options = {
-                                    hy: hy,
-                                    px: 'default',
-                                    city: city,
-                                    needAddtionalResult: false,
-                                    first: false, 
-                                    pn: page, 
-                                    kd: position,
-                                }
-                                self.getData('http://www.lagou.com/jobs/positionAjax.json?' + querystring.stringify(options))
-                            }, 10*1000)
-                        })
+                        setTimeout(()=> {
+                            console.log('当前抓取页面是：', page)
+                            const options = {
+                                hy: hangye[i],
+                                px: 'default',
+                                city: cities[k],
+                                needAddtionalResult: false,
+                                first: false, 
+                                pn: page, 
+                                kd: positions[pNum],
+                            }
+                            self.getData('http://www.lagou.com/jobs/positionAjax.json?' + querystring.stringify(options))
+                        }, 10*1000 * (page+1) * (i+1) * (k+1))
                                           
                     }
                 }
