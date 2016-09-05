@@ -32,22 +32,10 @@ let count = 0,
 class Crawler {
     constructor() {
         this.collection = []
-        // this.db = mongoose.model('lagou', LagouSchema)
     }
 
     insertData(db, data, callback) {
         var collection = db.collection('lagou');
-        // Insert some documents
-        // collection.insertMany([
-        //     {a : 1}, {a : 2}, {a : 3}
-        // ], function(err, result) {
-
-        //     console.log("Inserted 3 documents into the collection");
-        //     callback(result)
-        // });
-        // 
-        
-        // console.log('data:    =====: ' ,data)
 
         data['_id'] = data['positionId']
         data['updateTime'] = Date.now()
@@ -106,11 +94,11 @@ class Crawler {
                         this.insertData(DB, list_con)
                     }
 
+                    callback(null, req)
                 } else {
                     console.log('数据错误：',req)
                     callback({flag: true})
                 }
-                callback(null, req)
             }
         });
 
@@ -150,80 +138,6 @@ class Crawler {
                 return console.error(err);
             console.log('30 pages done!  ', err)
         })
-
-
-
-
-
-        // for (let i=0; i<2; i++) {
-        //     console.log('当前行业是：', hangye[i])
-        //     for (let k=0; k<1; k++) {
-        //         console.log('当前城市是：', cities[k])
-        //         for (let pNum=0; pNum<1; pNum++) {
-        //             console.log('当前职位是：', positions[pNum])
-        //             async.eachOfSeries([...Array(30).keys()], function(item, page, callback) {
-        //                 console.log(arguments)
-        //                 setTimeout(()=> {
-        //                     console.log('当前抓取页面是：', page)
-        //                     const options = {
-        //                         hy: hangye[i],
-        //                         px: 'default',
-        //                         city: cities[k],
-        //                         needAddtionalResult: false,
-        //                         first: false, 
-        //                         pn: page, 
-        //                         kd: positions[pNum],
-        //                     }
-        //                     self.getData('http://www.lagou.com/jobs/positionAjax.json?' + querystring.stringify(options), callback)
-        //                 }, 10*1000)
-
-        //                 // async.series({
-        //                 //     one: function(callback) {
-        //                 //         setTimeout(function() {
-        //                 //             callback(null, page);
-        //                 //         }, 10*1000)
-        //                 //     },
-        //                 //     two: function(callback){
-        //                 //         console.log('当前抓取页面是：', page)
-        //                 //         const options = {
-        //                 //             hy: hangye[i],
-        //                 //             px: 'default',
-        //                 //             city: cities[k],
-        //                 //             needAddtionalResult: false,
-        //                 //             first: false, 
-        //                 //             pn: page, 
-        //                 //             kd: positions[pNum],
-        //                 //         }
-        //                 //         self.getData('http://www.lagou.com/jobs/positionAjax.json?' + querystring.stringify(options), callback)
-        //                 //     }
-        //                 // }, function(err, results) {
-        //                 //     // results is now equal to: {one: 1, two: 2}
-        //                 //     console.log('done!!!!!!!!! ', results)
-        //                 // });
-
-
-        //             }, function(err) {
-        //                 console.log('30 pages done!  ', err)
-        //             })
-        //             // for (let page=0; page<31; page++) {
-        //             //     setTimeout(()=> {
-        //             //         console.log('当前抓取页面是：', page)
-        //             //         const options = {
-        //             //             hy: hangye[i],
-        //             //             px: 'default',
-        //             //             city: cities[k],
-        //             //             needAddtionalResult: false,
-        //             //             first: false, 
-        //             //             pn: page, 
-        //             //             kd: positions[pNum],
-        //             //         }
-        //             //         self.getData('http://www.lagou.com/jobs/positionAjax.json?' + querystring.stringify(options))
-        //             //     }, 10*1000 * (page+1) * (i+1) * (k+1))
-                                          
-        //             // }
-        //         }
-        //     }
-        // }
     }
 
 }
@@ -233,53 +147,10 @@ const crawler = new Crawler()
 MongoClient.connect(mongoUrl, function(err, db) {
     console.log("Connected succesfully to server");
 
-    
     DB = db
     crawler.start()
-    
-
-    // crawler.getData(`http://www.lagou.com/jobs/positionAjax.json?hy=教育&px=default&city=北京&needAddtionalResult=false`, 1, 'HTML5')
-
-    // crawler.insertData(db, function() {
-    //     db.close();
-    // })
-
 })
 
-
-// async.series([
-//     function(callback) {
-//         // do some stuff ...
-//         callback(null, 'one');
-//     },
-//     function(callback) {
-//         // do some more stuff ...
-//         callback(null, 'two');
-//     }
-// ],
-// // optional callback
-// function(err, results) {
-//     // results is now equal to ['one', 'two']
-//     console.log(results)
-// });
-
-// async.series({
-//     one: function(callback) {
-//         setTimeout(function() {
-//             callback(null, 1);
-//             console.log(1)
-//         }, 1000);
-//     },
-//     two: function(callback){
-//         setTimeout(function() {
-//             callback(null, 2);
-//             console.log(2)
-//         }, 5000);
-//     }
-// }, function(err, results) {
-//     // results is now equal to: {one: 1, two: 2}
-//     console.log(results)
-// });
 
 
 
