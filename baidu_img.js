@@ -1,5 +1,6 @@
 const prompt = require('prompt');
 const fs = require('fs');
+const path = require('path');
 const request = require('request');
 const str_table = {
     '_z2C\\$q': ':',
@@ -43,6 +44,26 @@ const char_table = {
     'a': '0'
 }
 
+prompt.start();
+prompt.get(['keyword', 'count'], function (err, result) {
+    result.count = result.count || 10
+    result.keyword = encodeURI(result.keyword)
+    console.log('  请输入你要下载的图片关键词：' + result.keyword);
+    console.log('  请输入你要下载的图片的数目：' + result.count);
+    checkImgPath()
+    request(getSearchUrl(result.keyword, result.count), function(error, response, body){
+        if (!error && response.statusCode == 200) {
+            body = JSON.parse(body)
+            let urls = getImgUrls(body.data.slice(0,result.count))
+            urls.forEach(function(v, k){
+                download(v, `img/${k}.jpg`, function(){
+                    console.log(k)
+                })
+            })
+        }
+    })
+
+});
 
 function decodeUrl(url) {
     for (let k in str_table) {
@@ -67,7 +88,6 @@ function getSearchUrl(word, count) {
 
 function getImgUrls(arr) {
     return arr.map((url)=> {
-        console.log(url.objURL)
         if (url.objURL) {
             return decodeUrl(url.objURL)
         } else {
@@ -83,28 +103,16 @@ function download(uri, filename, callback) {
     });
 }
 
+function checkImgPath() {
+    try {
+        fs.accessSync(path.join(__dirname, '/img') , fs.F_OK);
+        // Do something
+    } catch (e) {
+        fs.mkdirSync(path.join(__dirname, '/img'))
+        // It isn't accessible
+    }
+}
 
-prompt.start();
-prompt.get(['keyword', 'count'], function (err, result) {
-    console.log('Command-line input received:');
-    console.log('  请输入你要下载的图片关键词：' + result.keyword);
-    console.log('  请输入你要下载的图片的数目：' + result.count);
-
-
-    let url = getSearchUrl(result.keyword, result.count)
-    request(url, function(error, response, body){
-        if (!error && response.statusCode == 200) {
-            body = JSON.parse(body)
-            let urls = getImgUrls(body.data.slice(0,result.count))
-            urls.forEach(function(v, k){
-                download(v, `img/${k}.jpg`, function(){
-                    console.log(k)
-                })
-            })
-        }
-    })
-
-});
 
 
 
