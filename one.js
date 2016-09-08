@@ -7,8 +7,8 @@ const AV = require('leancloud-storage')
 const baseUrlQA = 'http://wufazhuce.com/question/'
 const baseUrlOne = 'http://wufazhuce.com/one/'
 const ArticleRange = [...Array(61).keys()].map(n=>+n+1350) // [1350...1410]
-const appId = 'NyGMeOpX8hMgNlDUWi31nVXJ'
-const appKey = 'p4EImgzXCPDrGTrcWKXlRLIy'
+const appId = 'your appid'
+const appKey = 'your appkey'
 
 
 class Crawler {
