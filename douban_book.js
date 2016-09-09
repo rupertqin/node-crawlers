@@ -66,7 +66,8 @@ class Crawler {
                 })
             } else {
                 console.log('========= bad href: ', response.request.href)
-                callback(true)
+                // continue
+                callback(null)
             }
         }) 
     }
@@ -86,7 +87,8 @@ class Crawler {
                 data.intro = $('.intro').text()
             } else {
                 console.log('========= bad href: ', response.request.href)
-                callback2(true)
+                // continue
+                callback2(null)
             }
             // save data anyway
             this.save(data)
