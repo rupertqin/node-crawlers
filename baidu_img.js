@@ -1,4 +1,5 @@
 const prompt = require('prompt');
+const colors = require("colors/safe")
 const fs = require('fs');
 const path = require('path');
 const request = require('request');
@@ -45,11 +46,18 @@ const char_table = {
 }
 
 prompt.start();
-prompt.get(['keyword', 'count'], function (err, result) {
+prompt.get({
+    properties: {
+        keyword: {
+            description: colors.magenta('请输入你要下载的图片关键词')
+        },
+        count: {
+            description: colors.magenta('请输入你要下载的图片的数目')
+        }
+    }
+}, function (err, result) {
     result.count = result.count || 10
     result.keyword = encodeURI(result.keyword)
-    console.log('  请输入你要下载的图片关键词：' + result.keyword);
-    console.log('  请输入你要下载的图片的数目：' + result.count);
     checkImgPath()
     request(getSearchUrl(result.keyword, result.count), function(error, response, body){
         if (!error && response.statusCode == 200) {
