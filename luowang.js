@@ -5,7 +5,6 @@ const cheerio = require('cheerio')
 const request = require('request');
 const colors = require("colors")
 
-
 const opts = {
     baseUrl: 'http://www.luoo.net/music/',
     range: [...Array(854).keys()].slice(1) // [1..853]
@@ -21,15 +20,16 @@ class Crawler {
         async.eachOfSeries(opts.range, (n, idx, callback)=> {
             this.getSongList(opts.baseUrl+n, n, callback)
                 .then((songInfo)=> {
+                    console.log(colors.green(`\nvol.${n} ${songInfo.title}'s downloading is started!`))    
                     async.eachOfSeries(songInfo.songs, (s, i, callback2)=> {
                         this.downloadSong(n, s, i+1, songInfo.dir, callback2)
                     }, ()=> {
-                        console.log(colors.green(`vol.${n} ${songInfo.title} is downloading!`))                        
+                        console.log(colors.green(`vol.${n} ${songInfo.title} is downloaded!`))                        
                         callback(null)
                     })
                 })
         }, ()=> {
-            colors.magenta('All is downloaded!!!')
+            console.log(colors.magenta('All is downloaded!!!'))
         })
     }
 
@@ -73,8 +73,8 @@ class Crawler {
                 callback2(null)
             })
             .on('close', ()=> {
-                callback2(null)
                 console.log(title, ' is downloaded!')
+                callback2(null)
             })
     }
 }
