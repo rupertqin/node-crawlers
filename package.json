@@ -24,6 +24,7 @@
   "dependencies": {
     "async": "^2.0.1",
     "cheerio": "^0.22.0",
+    "colors": "^1.1.2",
     "leancloud-storage": "^1.4.0",
     "mongoose": "^4.5.10",
     "request": "^2.74.0"

@@ -20,7 +20,7 @@ class Crawler {
         // leancloud init
         AV.init({ appId, appKey });
         async.eachOfSeries(ArticleRange, (n, idx, callback)=> {
-            //this.getQA(baseUrlQA+n, callback)
+            this.getQA(baseUrlQA+n, callback)
         })
         async.eachOfSeries(ArticleRange, (n, idx, callback)=> {
             this.getOne(baseUrlOne+n, callback)
