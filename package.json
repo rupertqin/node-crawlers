@@ -23,6 +23,7 @@
   "homepage": "https://github.com/rupertqin/node-crawlers#readme",
   "dependencies": {
     "async": "^2.0.1",
+    "bluebird": "^3.4.6",
     "cheerio": "^0.22.0",
     "colors": "^1.1.2",
     "leancloud-storage": "^1.4.0",
