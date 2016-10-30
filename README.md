@@ -6,7 +6,9 @@
 **sujin**       爬取素锦网站上的好文章,并且存储在 LeanCloud 云后台  
 **douban_book** 爬取豆瓣图书 Top250  
 **lagou**       从拉勾网爬取较大量的职位信息以及存储至 NoSql 类型数据库中  
-**zhihu**       从知乎网爬取特定ID的精华回答，并且存储在 LeanCloud 云后台。
+**zhihu**       从知乎网爬取特定ID的精华回答，并且存储在 LeanCloud 云后台。 
+
+**manong**      从 manong.io 网爬取文章列表，用 readability 模块解析文章，得到 title、content 信息，存到 LeanCloud 云后台 ———— 由于 manong.io 里的文章是从别的网站文章的收集，只是一个 url 列表， 所以用到了 readability 这个模块，可以提取出相当干净的有用文字， 但也不是100％成功， 不过放心，正确率高达 99.5% 以上， 不过对于比如 “知乎专栏” 这样的 Ajax 请求页面是没有作用的。
 
 ## 关于
 
