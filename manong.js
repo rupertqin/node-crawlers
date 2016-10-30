@@ -42,40 +42,40 @@ class Crawler {
 
     }
 
-    getList(url, callback) {
+    async getList(url, callback) {
         const options = {
             url: url,
             headers: {
                 'User-Agent': `Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36 115Browser/6.0.3`,
             }
         };
-        request(options, (error, response, body)=> {
-            console.log(response.request.href)
-            if (!error && response.statusCode == 200) {
-                const $ = cheerio.load(body) 
-                async.eachOfSeries($('h4'), (el, i, callback2)=> {
-                    let ATag = $(el).find('a').first()
-                    let link = querystring.parse($(ATag).attr('href').split('?')[1]).url
-                    // link = decodeURIComponent(link)
-                    let data = {
-                        title: $(ATag).text(),
-                        link: link,
-                    }
-                    console.log('link: ', link)
-                    this.getDetail(link, data, callback2)
-                }, ()=> {
-                    console.log('list ' + url + ' is saved!!!')
-                    callback(null)
-                })
-            } else {
-                console.log('========= bad href: ', response.request.href)
-                // continue
+
+        var {error, response, body} = await this.requestPromise(options)
+        console.log(response.request.href)
+        if (!error && response.statusCode == 200) {
+            const $ = cheerio.load(body) 
+            async.eachOfSeries($('h4'), (el, i, callback2)=> {
+                let ATag = $(el).find('a').first()
+                let link = querystring.parse($(ATag).attr('href').split('?')[1]).url
+                // link = decodeURIComponent(link)
+                let data = {
+                    title: $(ATag).text(),
+                    link: link,
+                }
+                console.log('link: ', link)
+                this.getDetail(link, data, callback2)
+            }, ()=> {
+                console.log('list ' + url + ' is saved!!!')
                 callback(null)
-            }
-        }) 
+            })
+        } else {
+            console.log('========= bad href: ', response.request.href)
+            // continue
+            callback(null)
+        }
     }
 
-    getDetail(url, data, callback2) {
+    async getDetail(url, data, callback2) {
         const options = {
             url: url,
             timeout: 5 * 1000,
@@ -83,25 +83,31 @@ class Crawler {
                 'User-Agent': `Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36 115Browser/6.0.3`,
             }
         };
-        request(options, (error, response, body)=> {
-            // console.log(response.request.href)
-            if (!error && response.statusCode == 200) {
-                read(body, (err, article, meta)=> {
-                    if (!article) return callback2(null)
-                    let data = {}
-                    data.url = url
-                    data.title = article.title
-                    data.content = article.content
-                    this.save(data, callback2)
-                    article.close();
-                })
-            } else {
-                if (response) {
-                    console.log('========= bad href: ', response.request.href)
-                }
-                // continue
-                callback2(null)
+        var {error, response, body} = await this.requestPromise(options)
+        if (!error && response.statusCode == 200) {
+            read(body, (err, article, meta)=> {
+                if (!article) return callback2(null)
+                let data = {}
+                data.url = url
+                data.title = article.title
+                data.content = article.content
+                this.save(data, callback2)
+                article.close();
+            })
+        } else {
+            if (response) {
+                console.log('========= bad href: ', response.request.href)
             }
+            // continue
+            callback2(null)
+        }
+    }
+
+    requestPromise(options) {
+        return new Promise(function(resolve, reject) {
+            request(options, function(error, response, body) {
+                resolve({error, response, body})
+            })
         })
     }
 
