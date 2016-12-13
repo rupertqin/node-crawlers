@@ -43,10 +43,6 @@ class Crawler {
         })
     }
 
-    getRealUrl(url) {
-
-    }
-
     async getList(url, callback) {
         const options = {
             url: url,
@@ -113,22 +109,6 @@ class Crawler {
         
     }
 
-    // requestPromise(options) {
-    //     return new Promise(function(resolve, reject) {
-    //         request(options, function(error, response, body) {
-    //             resolve({error, response, body})
-    //         })
-    //     })
-    // }
-
-    // readPromise(body) {
-    //     return new Promise(function(resolve, reject) {
-    //         read(body, function(err, article, meta) {
-    //             resolve({err, article, meta})
-    //         })
-    //     })
-    // }
-
     save(data, callback2) {
         const MaNong = AV.Object.extend('MaNong2');
         const maNong = new MaNong();
@@ -139,7 +119,6 @@ class Crawler {
     }
 
 }
-
 
 const crawler = new Crawler()
 crawler.start()
