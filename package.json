@@ -26,9 +26,12 @@
     "bluebird": "^3.4.6",
     "cheerio": "^0.22.0",
     "colors": "^1.1.2",
+    "knex": "^0.12.6",
     "leancloud-storage": "^1.4.0",
+    "lodash": "^4.17.2",
     "mongoose": "^4.5.10",
     "node-readability": "^2.2.0",
+    "pg": "^6.1.1",
     "request": "^2.74.0"
   }
 }
