@@ -1,20 +1,20 @@
 // 只获取 html 信息，留作第二步处理
 // use flag: --harmony_async_await
-// node version >= 7.0
+// node version >= 7
+// a postgres server is needed
+
 const request					=	require('request')
 const cheerio					= require('cheerio')
-const _								=	require('lodash')
 const querystring			= require('querystring')
 const Promise					= require('bluebird')
+const chalk						= require('chalk')
 const knex						= require('knex')
 const pg							= require('pg')
-const chalk						= require('chalk')
 
 const helper					= require('./lib/helper')
 
 const requestPromise	= Promise.promisify(request, {multiArgs: false}),
 	BASEURL							= 'http://weekly.manong.io/issues/',
-	ISSUES							= _.range(146,148),
 	REQ_OPTS			= {
 		timeout: 10 * 1000,
 		headers: {
@@ -22,14 +22,23 @@ const requestPromise	= Promise.promisify(request, {multiArgs: false}),
 		}
 	}
 
-class Crawler {
-	constructor(db) {
+const db = knex({
+	client: 'pg',
+	connection: 'postgres://postgres@127.0.0.1:5432/dev_reading',
+	pool: { min: 0, max: 7 },
+	//   acquireConnectionTimeout: 6000
+});
+
+class Manong {
+	constructor(db = db, issues, perPage = Infinity) {
 		this.db				= db
+		this.ISSUES		= issues
 		this.issue		= undefined
+		this.perPage	= perPage
 	}
 
 	async start() {
-		for (let issue of ISSUES) {
+		for (let issue of this.ISSUES) {
 			this.issue	= issue
 			try {
 				await this.getList()
@@ -55,7 +64,7 @@ class Crawler {
 			}
 
 			const $ = cheerio.load(response.body);
-			const h4 = $('h4').slice(0,4)
+			const h4 = $('h4').slice(0, this.perPage)
 			for (let el of Array.from(h4)) {
 				let ATag				= $(el).find('a').first()
 				let link				= querystring.parse( $(ATag).attr('href').split('?')[1] )
@@ -130,19 +139,7 @@ class Crawler {
 	}
 
 }
-
-
-
-
-;(async ()=> {
-	const db = knex({
-		client: 'pg',
-		connection: 'postgres://postgres@127.0.0.1:5432/dev_reading',
-		pool: { min: 0, max: 7 },
-		//   acquireConnectionTimeout: 6000
-	});
-
-
+module.exports = Manong
 
 	// await knex('articles').insert({title: 'Slaughterhouse Five'})
 
@@ -159,12 +156,6 @@ class Crawler {
 	// .then(function() {
 	//   console.log('done')
 	// })
-
-	const crawler = new Crawler(db)
-	crawler.start()
-
-})()
-
 
 
 
