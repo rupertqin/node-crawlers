@@ -11,6 +11,8 @@ const knex						= require('knex')
 const pg							= require('pg')
 const chalk						= require('chalk')
 
+const helper					= require('./lib/helper')
+
 const requestPromise	= Promise.promisify(request, {multiArgs: false}),
 	baseUrl							= 'http://weekly.manong.io/issues/',
 	issues							= _.range(146,148),
@@ -32,20 +34,26 @@ class Crawler {
 			this.issue	= issue
 			this.getList(callback)
 		}, ()=> {
-			console.log(chalk.green(':::::: ALL IS SAVED!!! ::::::'))
+			console.log(chalk.green('\n:::::: ALL IS SAVED ::::::'))
 		})
 	}
 
 	async getList(callback) {
-		let options			= requestOptions
-		options.url			= baseUrl + this.issue
+		let options			= {url: baseUrl + this.issue}
+		Object.assign(options, requestOptions)
+
 		const response	= await requestPromise(options)
 		if (response.statusCode == 200) {
 			const $ = cheerio.load(response.body)
 			async.eachOfSeries($('h4').slice(0,4), (el, i, callback2)=> {
 			// async.eachOfSeries($('h4'), (el, i, callback2)=> {
 				let ATag				= $(el).find('a').first()
-				let link				= querystring.parse($(ATag).attr('href').split('?')[1]).url
+				let link				= querystring.parse( $(ATag).attr('href').split('?')[1] )
+													.url
+
+				// bad link attr
+				if (!link) return callback2(null)
+
 				let description = $(el).next('p')
 				if (description.length) {
 					description = description.text().trim()
@@ -59,12 +67,12 @@ class Crawler {
 				console.log('link: ', link)
 				this.getDetail(link, data, callback2)
 			}, ()=> {
-				// 403
-				console.log('LIST :: ' + options.url + ' :: IS SAVED!!!')
+				// 40x
+				console.log(chalk.green('LIST :: ' + options.url + ' :: IS SAVED\n'))
 				callback(null)
 			})
 		} else {
-			// 501
+			// 50x
 			console.log(chalk.red('BAD LIST : ', response.request.href))
 			// continue
 			callback(null)
@@ -72,15 +80,19 @@ class Crawler {
 	}
 
 	async getDetail(link, data, callback2) {
-		let options = requestOptions
-		options.url = link
+		let options			= {url: link}
+		Object.assign(options, requestOptions)
+
 		try {
 			const response = await requestPromise(options)
 			if (response && response.statusCode == 200) {
 				data.html = response.body
+
+				// get real url
+				data.url  = helper.rmToutiaoParams(response.request.href)
 				this.save(data, callback2)
 			} else {
-				// 403
+				// 403 404 etc.
 				this.saveBadLink(data, callback2)
 			}
 		} catch (err){
@@ -94,7 +106,7 @@ class Crawler {
 	async saveBadLink(data, callback2) {
 		try {
 			await this.db('bad_articles').insert(data)
-			console.log(chalk.red('BAD ARTICLES : ' + data.title + ' IS NOT SAVED!!'))
+			console.log(chalk.red('BAD ARTICLES : ' + data.title + ' IS NOT SAVED'))
 		} catch (err) {
 			callback2(null)
 		}
@@ -104,7 +116,7 @@ class Crawler {
 	async save(data, callback2) {
 		try {
 			await this.db('articles').insert(data)
-			console.log(data.title + ' saved!');
+			console.log(data.title + ' saved');
 		} catch (err) {
 			callback2(null)
 		}
