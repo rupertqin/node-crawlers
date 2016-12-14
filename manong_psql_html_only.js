@@ -2,7 +2,6 @@
 // use flag: --harmony_async_await
 // node version >= 7.0
 const request					=	require('request')
-const async 					=	require('async')
 const cheerio					= require('cheerio')
 const _								=	require('lodash')
 const querystring			= require('querystring')
@@ -34,7 +33,7 @@ class Crawler {
 			this.issue	= issue
 			try {
 				await this.getList()
-				console.log(chalk.green(`ISSUE :: ${issue}  :: IS SAVED \n`}))
+				console.log(chalk.green(`ISSUE :: ${issue}  :: IS SAVED \n`))
 			} catch (err) {
 				console.log(chalk.red(`BAD ISSUE : ${issue}`))
 			}
@@ -43,89 +42,91 @@ class Crawler {
 
 	}
 
-	async getList(callback) {
+	async getList() {
 		return new Promise(async (resolve, reject)=> {
-
 			let options			= {url: BASEURL + this.issue}
 			Object.assign(options, REQ_OPTS)
 
 			const response	= await requestPromise(options)
-			if (response.statusCode == 200) {
-				const $ = cheerio.load(response.body)
-				async.eachOfSeries($('h4').slice(0,4), (el, i, callback2)=> {
-				// async.eachOfSeries($('h4'), (el, i, callback2)=> {
-					let ATag				= $(el).find('a').first()
-					let link				= querystring.parse( $(ATag).attr('href').split('?')[1] )
-														.url
 
-					// bad link attr
-					if (!link) return callback2(null)
-
-					let description = $(el).next('p')
-					if (description.length) {
-						description = description.text().trim()
-					}
-					let data = {
-						title: $(ATag).text(),
-						url: link,
-						issue: this.issue,
-						ps: description
-					}
-
-					this.getDetail(link, data, callback2)
-				}, ()=> {
-					resolve(true)
-				})
-			} else {
-				// 50x
-				// continue
-				reject(true)
+			// 40x
+			if (response.statusCode !== 200) {
+				return reject(true)
 			}
+
+			const $ = cheerio.load(response.body);
+			const h4 = $('h4').slice(0,4)
+			for (let el of Array.from(h4)) {
+				let ATag				= $(el).find('a').first()
+				let link				= querystring.parse( $(ATag).attr('href').split('?')[1] )
+													.url
+
+				// bad link attr
+				if (!link) continue;
+
+				let description = $(el).next('p')
+				if (description.length) {
+					description = description.text().trim()
+				}
+				let data = {
+					title: $(ATag).text(),
+					url: link,
+					issue: this.issue,
+					ps: description
+				}
+				await this.getDetail(link, data)
+			}
+			resolve(true)
 		})
 	}
 
-	async getDetail(link, data, callback2) {
-		let options			= {url: link}
-		Object.assign(options, REQ_OPTS)
+	async getDetail(link, data) {
+		return new Promise(async (resolve, reject)=> {
+			let options			= {url: link}
+			Object.assign(options, REQ_OPTS)
 
-		try {
-			const response = await requestPromise(options)
-			if (response && response.statusCode == 200) {
-				data.html = response.body
+			let response
 
-				// get real url
-				data.url  = helper.rmToutiaoParams(response.request.href)
-				this.save(data, callback2)
-			} else {
-				// 40x
-				this.saveBadLink(data, callback2)
+			try {
+				response = await requestPromise(options)
+			} catch (err){
+				if (err) {
+					// 50x
+					this.saveBadLink(data)
+					return reject(true)
+				}
 			}
-		} catch (err){
-			if (err) {
-				// 50x
-				this.saveBadLink(data, callback2)
+
+			// 40x
+			if (!response || response.statusCode !== 200) {
+				this.saveBadLink(data)
+				return reject(true)
 			}
-		}
+			data.html = response.body
+
+			// get real url
+			data.url  = helper.rmToutiaoParams(response.request.href)
+			this.save(data)
+			resolve(true)
+		})
 	}
 
-	async saveBadLink(data, callback2) {
+	async saveBadLink(data) {
 		try {
 			await this.db('bad_articles').insert(data)
 			console.log(chalk.red('BAD ARTICLES : ' + data.title + ' IS NOT SAVED'))
 		} catch (err) {
-			callback2(null)
+			if (err) console.log(err)
 		}
-		callback2(null)
 	}
 
-	async save(data, callback2) {
+	async save(data) {
 		try {
 			await this.db('articles').insert(data)
 			console.log(data.title + ' saved');
 		} catch (err) {
-			callback2(null)
+			if (err) console.log(err)
 		}
-		callback2(null)
 	}
 
 }
