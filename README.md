@@ -27,6 +27,10 @@
 **manong_psql_html_only**  
     从 manong.io 网爬取文章列表，不用 readability 模块， 存在本地 pg 数据库中，留作下一步处理
 
+
+## Required
+node version >= 7.0
+
 ## 关于
 
 看了这个项目[wuchangfeng/Crawler](https://github.com/wuchangfeng/Crawler/)，是用 python 写的，自己熟悉 node，就想用 node 写看看

@@ -12,6 +12,7 @@ const knex            = require('knex')
 const pg              = require('pg')
 
 const helper          = require('./lib/helper')
+const CONF            = require('./config')
 
 const requestPromise  = Promise.promisify(request, {multiArgs: false}),
   BASEURL             = 'http://weekly.manong.io/issues/',
@@ -24,7 +25,8 @@ const requestPromise  = Promise.promisify(request, {multiArgs: false}),
 
 const connect = knex({
   client: 'pg',
-  connection: 'postgres://postgres@127.0.0.1:5432/dev_reading',
+  // PG_STR should look like "postgres://postgres:pw@127.0.0.1:5432/talbe"
+  connection: CONF.PG_STR,
   pool: { min: 0, max: 7 },
   //   acquireConnectionTimeout: 6000
 });
