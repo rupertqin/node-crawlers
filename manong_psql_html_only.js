@@ -14,9 +14,9 @@ const chalk						= require('chalk')
 const helper					= require('./lib/helper')
 
 const requestPromise	= Promise.promisify(request, {multiArgs: false}),
-	baseUrl							= 'http://weekly.manong.io/issues/',
-	issues							= _.range(146,148),
-	requestOptions			= {
+	BASEURL							= 'http://weekly.manong.io/issues/',
+	ISSUES							= _.range(146,148),
+	REQ_OPTS			= {
 		timeout: 10 * 1000,
 		headers: {
 			'User-Agent': `Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36 115Browser/6.0.3`
@@ -30,7 +30,7 @@ class Crawler {
 	}
 
 	start() {
-		async.eachOfSeries(issues, (issue, idx, callback)=> {
+		async.eachOfSeries(ISSUES, (issue, idx, callback)=> {
 			this.issue	= issue
 			this.getList(callback)
 		}, ()=> {
@@ -39,8 +39,8 @@ class Crawler {
 	}
 
 	async getList(callback) {
-		let options			= {url: baseUrl + this.issue}
-		Object.assign(options, requestOptions)
+		let options			= {url: BASEURL + this.issue}
+		Object.assign(options, REQ_OPTS)
 
 		const response	= await requestPromise(options)
 		if (response.statusCode == 200) {
@@ -67,7 +67,6 @@ class Crawler {
 				console.log('link: ', link)
 				this.getDetail(link, data, callback2)
 			}, ()=> {
-				// 40x
 				console.log(chalk.green('LIST :: ' + options.url + ' :: IS SAVED\n'))
 				callback(null)
 			})
@@ -81,7 +80,7 @@ class Crawler {
 
 	async getDetail(link, data, callback2) {
 		let options			= {url: link}
-		Object.assign(options, requestOptions)
+		Object.assign(options, REQ_OPTS)
 
 		try {
 			const response = await requestPromise(options)
@@ -92,12 +91,12 @@ class Crawler {
 				data.url  = helper.rmToutiaoParams(response.request.href)
 				this.save(data, callback2)
 			} else {
-				// 403 404 etc.
+				// 40x
 				this.saveBadLink(data, callback2)
 			}
 		} catch (err){
 			if (err) {
-				// 501
+				// 50x
 				this.saveBadLink(data, callback2)
 			}
 		}
