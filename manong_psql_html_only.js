@@ -3,13 +3,13 @@
 // node version >= 7
 // a postgres server is needed
 
-const request					=	require('request')
-const cheerio					= require('cheerio')
-const querystring			= require('querystring')
-const Promise					= require('bluebird')
-const chalk						= require('chalk')
-const knex						= require('knex')
-const pg							= require('pg')
+const request         = require('request')
+const cheerio         = require('cheerio')
+const querystring     = require('querystring')
+const Promise         = require('bluebird')
+const chalk           = require('chalk')
+const knex            = require('knex')
+const pg              = require('pg')
 
 const helper					= require('./lib/helper')
 
@@ -67,7 +67,7 @@ class Manong {
 
 			// support test
 			const h4 = $('h4').slice(0, this.perPage)
-			
+
 			for (let el of Array.from(h4)) {
 				let ATag				= $(el).find('a').first()
 				let link				= querystring.parse( $(ATag).attr('href').split('?')[1] )
