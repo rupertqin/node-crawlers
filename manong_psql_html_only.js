@@ -22,7 +22,7 @@ const requestPromise  = Promise.promisify(request, {multiArgs: false}),
     }
   }
 
-const db = knex({
+const connect = knex({
   client: 'pg',
   connection: 'postgres://postgres@127.0.0.1:5432/dev_reading',
   pool: { min: 0, max: 7 },
@@ -30,8 +30,8 @@ const db = knex({
 });
 
 class Manong {
-  constructor(db = db, issues, perPage = Infinity) {
-    this.db       = db
+  constructor(connect = connect, issues, perPage = Infinity) {
+    this.connect       = connect
     this.ISSUES   = issues
     this.issue    = undefined
     this.perPage  = perPage
@@ -68,6 +68,7 @@ class Manong {
       // support test
       const h4 = $('h4').slice(0, this.perPage)
 
+      // Array.from convert cheerio NodeList to real Array
       for (let el of Array.from(h4)) {
         let ATag        = $(el).find('a').first()
         let link        = querystring.parse( $(ATag).attr('href').split('?')[1] )
@@ -125,7 +126,7 @@ class Manong {
 
   async saveBadLink(data) {
     try {
-      await this.db('bad_articles').insert(data)
+      await this.connect('bad_articles').insert(data)
       console.log(chalk.red('BAD ARTICLES : ' + data.title + ' IS NOT SAVED'))
     } catch (err) {
       if (err) console.log(err)
@@ -134,7 +135,7 @@ class Manong {
 
   async save(data) {
     try {
-      await this.db('articles').insert(data)
+      await this.connect('articles').insert(data)
       console.log(data.title + ' saved');
     } catch (err) {
       if (err) console.log(err)

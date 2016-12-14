@@ -9,18 +9,18 @@ console.log(Manong)
 
 describe('Manong', function() {
   describe('#number', function() {
-    it('db should increase more than 5', async function() {
-      const db = knex({
+    it('database rows should increase more than 5', async function() {
+      const connect = knex({
         client: 'pg',
         connection: 'postgres://postgres@127.0.0.1:5432/dev_reading',
         pool: { min: 0, max: 7 },
         //   acquireConnectionTimeout: 6000
       });
-      let articles = await db.select().from('articles')
+      let articles = await connect.select().from('articles')
       const orinLen = articles.length
-      const manong = new Manong(db, _.range(143,145), 4)
+      const manong = new Manong(connect, _.range(143,145), 4)
       await manong.start()
-      articles = await db.select().from('articles')
+      articles = await connect.select().from('articles')
       assert.isAbove(articles.length, orinLen + 5)
     });
   });
