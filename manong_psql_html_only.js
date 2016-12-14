@@ -64,7 +64,10 @@ class Manong {
 			}
 
 			const $ = cheerio.load(response.body);
+
+			// support test
 			const h4 = $('h4').slice(0, this.perPage)
+			
 			for (let el of Array.from(h4)) {
 				let ATag				= $(el).find('a').first()
 				let link				= querystring.parse( $(ATag).attr('href').split('?')[1] )
