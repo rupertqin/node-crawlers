@@ -29,53 +29,59 @@ class Crawler {
 		this.issue		= undefined
 	}
 
-	start() {
-		async.eachOfSeries(ISSUES, (issue, idx, callback)=> {
+	async start() {
+		for (let issue of ISSUES) {
 			this.issue	= issue
-			this.getList(callback)
-		}, ()=> {
-			console.log(chalk.green('\n:::::: ALL IS SAVED ::::::'))
-		})
+			try {
+				await this.getList()
+				console.log(chalk.green(`ISSUE :: ${issue}  :: IS SAVED \n`}))
+			} catch (err) {
+				console.log(chalk.red(`BAD ISSUE : ${issue}`))
+			}
+		}
+		console.log(chalk.green(':::::: ALL IS SAVED ::::::'))
+
 	}
 
 	async getList(callback) {
-		let options			= {url: BASEURL + this.issue}
-		Object.assign(options, REQ_OPTS)
+		return new Promise(async (resolve, reject)=> {
 
-		const response	= await requestPromise(options)
-		if (response.statusCode == 200) {
-			const $ = cheerio.load(response.body)
-			async.eachOfSeries($('h4').slice(0,4), (el, i, callback2)=> {
-			// async.eachOfSeries($('h4'), (el, i, callback2)=> {
-				let ATag				= $(el).find('a').first()
-				let link				= querystring.parse( $(ATag).attr('href').split('?')[1] )
-													.url
+			let options			= {url: BASEURL + this.issue}
+			Object.assign(options, REQ_OPTS)
 
-				// bad link attr
-				if (!link) return callback2(null)
+			const response	= await requestPromise(options)
+			if (response.statusCode == 200) {
+				const $ = cheerio.load(response.body)
+				async.eachOfSeries($('h4').slice(0,4), (el, i, callback2)=> {
+				// async.eachOfSeries($('h4'), (el, i, callback2)=> {
+					let ATag				= $(el).find('a').first()
+					let link				= querystring.parse( $(ATag).attr('href').split('?')[1] )
+														.url
 
-				let description = $(el).next('p')
-				if (description.length) {
-					description = description.text().trim()
-				}
-				let data = {
-					title: $(ATag).text(),
-					url: link,
-					issue: this.issue,
-					ps: description
-				}
-				console.log('link: ', link)
-				this.getDetail(link, data, callback2)
-			}, ()=> {
-				console.log(chalk.green('LIST :: ' + options.url + ' :: IS SAVED\n'))
-				callback(null)
-			})
-		} else {
-			// 50x
-			console.log(chalk.red('BAD LIST : ', response.request.href))
-			// continue
-			callback(null)
-		}
+					// bad link attr
+					if (!link) return callback2(null)
+
+					let description = $(el).next('p')
+					if (description.length) {
+						description = description.text().trim()
+					}
+					let data = {
+						title: $(ATag).text(),
+						url: link,
+						issue: this.issue,
+						ps: description
+					}
+
+					this.getDetail(link, data, callback2)
+				}, ()=> {
+					resolve(true)
+				})
+			} else {
+				// 50x
+				// continue
+				reject(true)
+			}
+		})
 	}
 
 	async getDetail(link, data, callback2) {
