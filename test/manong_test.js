@@ -1,4 +1,4 @@
-const assert          = require('chai').assert;
+const assert          = require('assert');
 const knex						= require('knex')
 const pg							= require('pg')
 const Manong          = require('../manong_psql_html_only')
@@ -18,7 +18,8 @@ describe('Manong', function() {
       const manong    = new Manong(connect, [143,144], 4)
       await manong.start()
       articles = await connect.select().from('articles')
-      assert.isAbove(articles.length, orinLen + 5)
+      assert.ok(articles.length > orinLen + 5, 'big than')
+      // assert.isAbove(articles.length, orinLen + 5)
     });
   });
 });
