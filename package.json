@@ -27,7 +27,7 @@
     "chalk": "^1.1.3",
     "cheerio": "^0.22.0",
     "colors": "^1.1.2",
-    "knex": "^0.12.6",
+    "knex": "^0.19.5",
     "leancloud-storage": "^1.4.0",
     "lodash": "^4.17.2",
     "mongoose": "^4.5.10",
