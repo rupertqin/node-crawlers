@@ -30,7 +30,7 @@
     "knex": "^0.12.6",
     "leancloud-storage": "^1.4.0",
     "lodash": "^4.17.2",
-    "mongoose": "^4.5.10",
+    "mongoose": "^5.7.5",
     "node-readability": "^2.2.0",
     "pg": "^6.1.1",
     "request": "^2.74.0"
