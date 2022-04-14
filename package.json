@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/rupertqin/node-crawlers#readme",
   "dependencies": {
-    "async": "^2.0.1",
+    "async": "^3.2.2",
     "bluebird": "^3.4.6",
     "chalk": "^1.1.3",
     "cheerio": "^0.22.0",
