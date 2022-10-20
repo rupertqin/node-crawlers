@@ -70,21 +70,15 @@ assertion-error@^1.0.1:
   version "1.0.2"
   resolved "http://registry.npm.taobao.org/assertion-error/download/assertion-error-1.0.2.tgz#13ca515d86206da0bac66e834dd397d87581094c"
 
-async@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.0.1.tgz#b709cc0280a9c36f09f4536be823c838a9049e25"
+async@2.6.0, async@^2.0.1:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.6.0.tgz#61a29abb6fcc026fea77e56d1c6ec53a795951f4"
   dependencies:
-    lodash "^4.8.0"
+    lodash "^4.14.0"
 
 async@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
-
-async@^2.0.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.1.1.tgz#e11b6d10043f2254efb61a21163d840ccddb8d28"
-  dependencies:
-    lodash "^4.14.0"
 
 async@~0.9.0:
   version "0.9.2"
@@ -133,9 +127,9 @@ bluebird, bluebird@^3.4.6:
   version "3.4.6"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
 
-bluebird@2.10.2:
-  version "2.10.2"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
+bluebird@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
 boolbase@~1.0.0:
   version "1.0.0"
@@ -176,15 +170,15 @@ browser-stdout@1.3.0:
   version "1.3.0"
   resolved "http://registry.npm.taobao.org/browser-stdout/download/browser-stdout-1.3.0.tgz#f351d32969d32fa5d7a5567154263d928ae3bd1f"
 
-bson@~0.5.4, bson@~0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/bson/-/bson-0.5.5.tgz#1d6725d400f0fbf0271bf6bafc8fa1126c29983b"
+bson@~1.0.4:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-1.0.9.tgz#12319f8323b1254739b7c6bef8d3e89ae05a2f57"
 
 buffer-concat@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/buffer-concat/-/buffer-concat-0.0.1.tgz#43e1e3c77f3d22fb55bea6890a92d03778c4c10a"
 
-buffer-shims@^1.0.0:
+buffer-shims@^1.0.0, buffer-shims@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
 
@@ -351,6 +345,12 @@ debug@2.2.0, debug@^2.1.3, debug@^2.2.0:
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
   dependencies:
     ms "0.7.1"
+
+debug@2.6.9:
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
+  dependencies:
+    ms "2.0.0"
 
 deep-eql@^0.1.3:
   version "0.1.3"
@@ -703,9 +703,9 @@ homedir-polyfill@^1.0.0:
   dependencies:
     parse-passwd "^1.0.0"
 
-hooks-fixed@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/hooks-fixed/-/hooks-fixed-1.2.0.tgz#0d2772d4d7d685ff9244724a9f0b5b2559aac96b"
+hooks-fixed@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/hooks-fixed/-/hooks-fixed-2.0.2.tgz#20076daa07e77d8a6106883ce3f1722e051140b0"
 
 "htmlparser2@>= 3.7.3 < 4.0.0", htmlparser2@^3.9.1:
   version "3.9.1"
@@ -909,9 +909,9 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.3.6"
 
-kareem@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.1.3.tgz#0877610d8879c38da62d1dbafde4e17f2692f041"
+kareem@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.5.0.tgz#e3e4101d9dcfde299769daf4b4db64d895d17448"
 
 kind-of@^3.0.2:
   version "3.1.0"
@@ -1028,6 +1028,10 @@ lodash.foreach@^4.3.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.foreach/-/lodash.foreach-4.5.0.tgz#1a6a35eace401280c7f06dddec35165ab27e3e53"
 
+lodash.get@4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "http://registry.npm.taobao.org/lodash.isarguments/download/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -1068,7 +1072,7 @@ lodash.some@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.some/-/lodash.some-4.6.0.tgz#1bb9f314ef6b8baded13b549169b2a945eb68e4d"
 
-lodash@^4.14.0, lodash@^4.17.2, lodash@^4.6.0, lodash@^4.8.0:
+lodash@^4.14.0, lodash@^4.17.2, lodash@^4.6.0:
   version "4.17.2"
   resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -1168,52 +1172,53 @@ mocha@^3.2.0:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
-mongodb-core@2.0.12:
-  version "2.0.12"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.0.12.tgz#bb66aad550e252731f8ad49276815264a91c337c"
+mongodb-core@2.1.18:
+  version "2.1.18"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.1.18.tgz#4c46139bdf3a1f032ded91db49f38eec01659050"
   dependencies:
-    bson "~0.5.5"
+    bson "~1.0.4"
     require_optional "~1.0.0"
 
-mongodb@2.2.10:
-  version "2.2.10"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.10.tgz#d11273a5a53b08e17bcc4c8a295ded0f151ccae6"
+mongodb@2.2.34:
+  version "2.2.34"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.34.tgz#a34f59bbeb61754aec432de72c3fe21526a44c1a"
   dependencies:
     es6-promise "3.2.1"
-    mongodb-core "2.0.12"
-    readable-stream "2.1.5"
+    mongodb-core "2.1.18"
+    readable-stream "2.2.7"
 
-mongoose@^4.5.10:
-  version "4.6.3"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.6.3.tgz#92226e34720ae859afb5dee3170b62653d6598bb"
+mongoose@^4.13.21:
+  version "4.13.21"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.13.21.tgz#83f4a8461b19aca1b2274feaaaf262b71b6f034d"
   dependencies:
-    async "2.0.1"
-    bson "~0.5.4"
-    hooks-fixed "1.2.0"
-    kareem "1.1.3"
-    mongodb "2.2.10"
-    mpath "0.2.1"
+    async "2.6.0"
+    bson "~1.0.4"
+    hooks-fixed "2.0.2"
+    kareem "1.5.0"
+    lodash.get "4.4.2"
+    mongodb "2.2.34"
+    mpath "0.5.1"
     mpromise "0.5.5"
-    mquery "1.11.0"
-    ms "0.7.1"
-    muri "1.1.1"
+    mquery "2.3.3"
+    ms "2.0.0"
+    muri "1.3.0"
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-mpath@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.2.1.tgz#3a4e829359801de96309c27a6b2e102e89f9e96e"
+mpath@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.5.1.tgz#17131501f1ff9e6e4fbc8ffa875aa7065b5775ab"
 
 mpromise@0.5.5:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/mpromise/-/mpromise-0.5.5.tgz#f5b24259d763acc2257b0a0c8c6d866fd51732e6"
 
-mquery@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/mquery/-/mquery-1.11.0.tgz#e0c65dedb1037edbf6cfb88262e777fee23551d9"
+mquery@2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/mquery/-/mquery-2.3.3.tgz#221412e5d4e7290ca5582dd16ea8f190a506b518"
   dependencies:
-    bluebird "2.10.2"
-    debug "2.2.0"
+    bluebird "3.5.0"
+    debug "2.6.9"
     regexp-clone "0.0.1"
     sliced "0.0.5"
 
@@ -1221,9 +1226,13 @@ ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
 
-muri@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/muri/-/muri-1.1.1.tgz#64bd904eaf8ff89600c994441fad3c5195905ac2"
+ms@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+
+muri@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/muri/-/muri-1.3.0.tgz#aeccf3db64c56aa7c5b34e00f95b7878527a4721"
 
 node-readability:
   version "2.2.0"
@@ -1433,16 +1442,16 @@ randomatic@^1.1.3:
     is-number "^2.0.2"
     kind-of "^3.0.2"
 
-readable-stream@2.1.5, readable-stream@^2.0.2, readable-stream@^2.0.5:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.1.5.tgz#66fa8b720e1438b364681f2ad1a63c618448c9d0"
+readable-stream@2.2.7:
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.7.tgz#07057acbe2467b22042d36f98c5ad507054e95b1"
   dependencies:
-    buffer-shims "^1.0.0"
+    buffer-shims "~1.0.0"
     core-util-is "~1.0.0"
     inherits "~2.0.1"
     isarray "~1.0.0"
     process-nextick-args "~1.0.6"
-    string_decoder "~0.10.x"
+    string_decoder "~1.0.0"
     util-deprecate "~1.0.1"
 
 readable-stream@^1.1.12:
@@ -1453,6 +1462,18 @@ readable-stream@^1.1.12:
     inherits "~2.0.1"
     isarray "0.0.1"
     string_decoder "~0.10.x"
+
+readable-stream@^2.0.2, readable-stream@^2.0.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.1.5.tgz#66fa8b720e1438b364681f2ad1a63c618448c9d0"
+  dependencies:
+    buffer-shims "^1.0.0"
+    core-util-is "~1.0.0"
+    inherits "~2.0.1"
+    isarray "~1.0.0"
+    process-nextick-args "~1.0.6"
+    string_decoder "~0.10.x"
+    util-deprecate "~1.0.1"
 
 readable-stream@~2.0.0, readable-stream@~2.0.5:
   version "2.0.6"
@@ -1561,6 +1582,10 @@ resolve@^1.1.6, resolve@^1.1.7:
   version "1.1.7"
   resolved "http://registry.npm.taobao.org/resolve/download/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
+safe-buffer@~5.1.0:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
+
 semver@4.3.2:
   version "4.3.2"
   resolved "http://registry.npm.taobao.org/semver/download/semver-4.3.2.tgz#c7a07158a80bedd052355b770d82d6640f803be7"
@@ -1619,6 +1644,12 @@ sshpk@^1.7.0:
 string_decoder@~0.10.x:
   version "0.10.31"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
+
+string_decoder@~1.0.0:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.0.3.tgz#0fc67d7c141825de94282dd536bec6b9bce860ab"
+  dependencies:
+    safe-buffer "~5.1.0"
 
 stringstream@~0.0.4:
   version "0.0.5"
